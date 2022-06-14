@@ -9,8 +9,8 @@ on:
 
 jobs:
   on-success:
+    runs-on: ubuntu-22.04
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: Grabing repository
@@ -24,8 +24,8 @@ jobs:
               Your application is released to the cloud! ☁️
 
   on-failure:
+    runs-on: ubuntu-22.04
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
-    runs-on: ubuntu-latest
     steps:
       - name: Bot
         uses: peter-evans/commit-comment@v1
