@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+
+      - name: Bot
+        uses: peter-evans/commit-comment@v1
+        with:
+          body: |
+              CI is in progress :D
+
+      - uses: actions/checkout@v2
+      - name: Grabing repository
+        run: |
+          echo "Ping!"
