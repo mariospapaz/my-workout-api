@@ -1,6 +1,6 @@
 ## my-workout
 <div align="center">
-<img src="https://img.shields.io/github/repo-size/mariospapaz/JohnsAdventure">
+<img src="https://img.shields.io/github/repo-size/mariospapaz/my-workout">
 <img src="https://img.shields.io/github/license/mariospapaz/my-workout">
 
   
