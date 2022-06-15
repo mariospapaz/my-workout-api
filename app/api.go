@@ -26,7 +26,7 @@ func RouterPaths(engine *gin.Engine) {
 
 func ConnectDB() *mongo.Collection {
 	// Must use Mongo 5.0 stable
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://root:example@bibi:27017/my-workout?authSource=admin"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://root:example@bibi:27017/"))
 	if err != nil {
 		log.Fatal(err)
 	}
