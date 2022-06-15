@@ -21,6 +21,7 @@ func GetDayWorkout(ctx *gin.Context) {
 func RouterPaths(engine *gin.Engine) {
 	engine.GET("/api/workout", GetAllWorkouts)
 	engine.GET("/api/workout/:day", GetDayWorkout)
+	engine.Run("localhost:8080")
 }
 
 func ConnectDB() *mongo.Collection {
