@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"log"
+	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -15,18 +17,23 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-func GetAllWorkouts(ctx *gin.Context) {
+var workouts []interface{}
 
+func GetAllWorkouts(c *gin.Context) {
+	c.IndentedJSON(http.StatusOK, workouts)
 }
 
-func GetDayWorkout(ctx *gin.Context) {
+func GetDayWorkout(c *gin.Context) {
+	id := c.Param("id")
+	n_id, _ := strconv.Atoi(id)
+	log.Println(n_id)
 
-}
+	if n_id > 7 || n_id < 1 {
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "each week has 7 days."})
+		return
+	}
 
-func RouterPaths(engine *gin.Engine) {
-	engine.GET("/api/workout", GetAllWorkouts)
-	engine.GET("/api/workout/:day", GetDayWorkout)
-	engine.Run("localhost:8080")
+	c.IndentedJSON(http.StatusOK, workouts[n_id-1])
 }
 
 func PrintLog(line string) {
@@ -70,11 +77,6 @@ func ConnectDB() {
 
 	logCollection := client.Database("database").Collection("temp")
 
-	databases, err := client.ListDatabases(ctx, bson.M{})
-	if err != nil {
-		panic(err)
-	}
-
 	file, err := os.Open(data_path)
 	if err != nil {
 		panic(err)
@@ -88,19 +90,34 @@ func ConnectDB() {
 		panic(err)
 	}
 
-	log.Println(databases)
-
 	logCollection.InsertMany(ctx, Plan)
 
 	PrintLog("Data inserted")
 
 	file.Close()
+
+	query, err := logCollection.Find(ctx, bson.M{})
+	if err != nil {
+		panic(err)
+	}
+
+	var exercises []bson.M
+	if err = query.All(ctx, &exercises); err != nil {
+		panic(err)
+	}
+
+	for _, exercise := range exercises {
+		workouts = append(workouts, exercise)
+	}
 }
 
 func main() {
 
 	ConnectDB()
 
-	//router := gin.Default()
-	//RouterPaths(router)
+	router := gin.Default()
+
+	router.GET("/api/workout", GetAllWorkouts)
+	router.GET("/api/workout/:id", GetDayWorkout)
+	router.Run("localhost:25585")
 }
