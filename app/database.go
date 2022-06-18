@@ -13,14 +13,20 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
+const uri = "mongodb://root:example@localhost:27017/?maxPoolSize=20&w=majority"
+const data_path = "../.mongo/data.json"
+
+var client *mongo.Client
+
+var ctx context.Context
+
+var Plan []interface{}
+
+var exercises []bson.M
+
 func ConnectDB() {
 
 	// Must use Mongo 5.0 stable (note: change localhost to 'bibi' when the image is about to upload)
-
-	PrintLog("Connecting to Database")
-
-	const uri = "mongodb://root:example@localhost:27017/?maxPoolSize=20&w=majority"
-	const data_path = "../.mongo/data.json"
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
@@ -33,6 +39,7 @@ func ConnectDB() {
 	if err != nil {
 		panic(err)
 	}
+	PrintLog("Connected to MongoDB")
 
 	defer func() {
 		if err = client.Disconnect(context.TODO()); err != nil {
@@ -44,9 +51,15 @@ func ConnectDB() {
 		panic(err)
 	}
 
-	PrintLog("Connected to MongoDB")
+	setupMongo(client, &ctx)
 
-	logCollection := client.Database("database").Collection("temp")
+}
+
+func setupMongo(cl *mongo.Client, new_ctw *context.Context) {
+
+	logCollection := *cl.Database("database").Collection("temp")
+
+	PrintLog("Connecting to Database")
 
 	file, err := os.Open(data_path)
 	if err != nil {
@@ -54,26 +67,26 @@ func ConnectDB() {
 	}
 
 	bytes, err := ioutil.ReadAll(file)
-
-	var Plan []interface{}
+	if err != nil {
+		panic(err)
+	}
 
 	if err := json.Unmarshal(bytes, &Plan); err != nil {
 		panic(err)
 	}
 
-	logCollection.InsertMany(ctx, Plan)
+	logCollection.InsertMany(*new_ctw, Plan)
 
 	PrintLog("Data inserted")
 
 	file.Close()
 
-	query, err := logCollection.Find(ctx, bson.M{})
+	query, err := logCollection.Find(*new_ctw, bson.M{})
 	if err != nil {
 		panic(err)
 	}
 
-	var exercises []bson.M
-	if err = query.All(ctx, &exercises); err != nil {
+	if err = query.All(*new_ctw, &exercises); err != nil {
 		panic(err)
 	}
 
