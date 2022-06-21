@@ -12,12 +12,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-const uri = "mongodb://root:example@localhost:27017/?maxPoolSize=20&w=majority"
+const uri = "mongodb://root:example@bibi:27017/?maxPoolSize=200&w=majority"
 const data_path = "../.mongo/data.json"
-
-var client *mongo.Client
-
-var ctx context.Context
 
 var Plans []Plan
 
@@ -70,7 +66,10 @@ func setupMongo(cl *mongo.Client, new_ctw *context.Context) {
 
 	file, err := os.Open(data_path)
 	if err != nil {
-		panic(err)
+		file, err = os.Open("./data.json")
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	bytes, err := ioutil.ReadAll(file)

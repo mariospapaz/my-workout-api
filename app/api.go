@@ -15,10 +15,9 @@ func GetAllWorkouts(c *gin.Context) {
 func GetDayWorkout(c *gin.Context) {
 	id := c.Param("id")
 	n_id, _ := strconv.Atoi(id)
-	log.Println(n_id)
 
 	if n_id > 7 || n_id < 1 {
-		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "each week has 7 days."})
+		c.IndentedJSON(http.StatusBadRequest, gin.H{"error": "you surpassed laws of weeks"})
 		return
 	}
 
