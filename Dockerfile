@@ -1,4 +1,6 @@
-FROM golang:1.18.3-alpine3.16
+FROM mongo:5
+
+ENV API_PORT=25585
 
 WORKDIR /.
 
@@ -6,12 +8,16 @@ COPY .mongo/data.json ./
 
 COPY ./app/* ./
 
-RUN go get "go.mongodb.org/mongo-driver/mongo"
+COPY ./go.mod ./
 
-RUN go get "github.com/gin-gonic/gin"
+COPY ./go.sum ./
 
-ENV PORT=25585
+RUN apt update && apt upgrade --yes && apt install golang-go --yes && apt clean && rm -r /var/lib/apt/lists
 
-EXPOSE 25585
+RUN go get ./
+
+EXPOSE ${API_PORT}
+
+EXPOSE 27017
 
 CMD ["go", "run", "."]

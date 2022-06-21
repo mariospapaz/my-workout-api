@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"os"
 	"time"
 
@@ -12,7 +13,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-const uri = "mongodb://root:example@bibi:27017/?maxPoolSize=200&w=majority"
+const uri = "mongodb://root:example@localhost:27017/?maxPoolSize=200&w=majority"
 const data_path = "../.mongo/data.json"
 
 var Plans []Plan
@@ -30,11 +31,15 @@ type Exercise struct {
 func ConnectDB() {
 
 	// Must use Mongo 5.0 stable (note: change localhost to 'bibi' when the image is about to upload)
-
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
-		panic(err)
+		client, err = mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017/"))
+		if err != nil {
+			panic(err)
+		}
 	}
+
+	log.Println("Connecting..")
 
 	ctx, _ := context.WithTimeout(context.Background(), 10*time.Second)
 
@@ -42,7 +47,6 @@ func ConnectDB() {
 	if err != nil {
 		panic(err)
 	}
-	PrintLog("Connected to MongoDB")
 
 	defer func() {
 		if err = client.Disconnect(context.TODO()); err != nil {
@@ -54,6 +58,7 @@ func ConnectDB() {
 		panic(err)
 	}
 
+	PrintLog("Connected to MongoDB")
 	setupMongo(client, &ctx)
 
 }
