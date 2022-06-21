@@ -8,10 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var workouts []interface{}
-
 func GetAllWorkouts(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, workouts)
+	c.IndentedJSON(http.StatusOK, Plans)
 }
 
 func GetDayWorkout(c *gin.Context) {
@@ -24,7 +22,12 @@ func GetDayWorkout(c *gin.Context) {
 		return
 	}
 
-	c.IndentedJSON(http.StatusOK, workouts[n_id-1])
+	if Plans[n_id-1].Exercises == nil {
+		c.IndentedJSON(http.StatusOK, gin.H{"message": "break"})
+		return
+	}
+
+	c.IndentedJSON(http.StatusOK, Plans[n_id-1])
 }
 
 func PrintLog(line string) {

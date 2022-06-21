@@ -7,7 +7,6 @@ import (
 	"os"
 	"time"
 
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
@@ -20,9 +19,17 @@ var client *mongo.Client
 
 var ctx context.Context
 
-var Plan []interface{}
+var Plans []Plan
 
-var exercises []bson.M
+type Plan struct {
+	ID        string     `json:"_id"`
+	Exercises []Exercise `json:"exercises"`
+}
+
+type Exercise struct {
+	Name     string `json:"name"`
+	Quantity string `json:"quantity"`
+}
 
 func ConnectDB() {
 
@@ -71,26 +78,15 @@ func setupMongo(cl *mongo.Client, new_ctw *context.Context) {
 		panic(err)
 	}
 
-	if err := json.Unmarshal(bytes, &Plan); err != nil {
+	if err := json.Unmarshal(bytes, &Plans); err != nil {
 		panic(err)
 	}
 
-	logCollection.InsertMany(*new_ctw, Plan)
+	for _, item := range Plans {
+		logCollection.InsertOne(*new_ctw, item)
+	}
 
 	PrintLog("Data inserted")
 
 	file.Close()
-
-	query, err := logCollection.Find(*new_ctw, bson.M{})
-	if err != nil {
-		panic(err)
-	}
-
-	if err = query.All(*new_ctw, &exercises); err != nil {
-		panic(err)
-	}
-
-	for _, exercise := range exercises {
-		workouts = append(workouts, exercise)
-	}
 }
