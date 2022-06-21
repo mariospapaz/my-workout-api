@@ -14,7 +14,7 @@ import (
 )
 
 const uri = "mongodb://root:example@localhost:27017/?maxPoolSize=200&w=majority"
-const data_path = "../.mongo/data.json"
+const data_path = "../data.json"
 
 var Plans []Plan
 
@@ -33,10 +33,7 @@ func ConnectDB() {
 	// Must use Mongo 5.0 stable (note: change localhost to 'bibi' when the image is about to upload)
 	client, err := mongo.NewClient(options.Client().ApplyURI(uri))
 	if err != nil {
-		client, err = mongo.NewClient(options.Client().ApplyURI("mongodb://127.0.0.1:27017/"))
-		if err != nil {
-			panic(err)
-		}
+		panic(err)
 	}
 
 	log.Println("Connecting..")
@@ -71,10 +68,7 @@ func setupMongo(cl *mongo.Client, new_ctw *context.Context) {
 
 	file, err := os.Open(data_path)
 	if err != nil {
-		file, err = os.Open("./data.json")
-		if err != nil {
-			panic(err)
-		}
+		panic(err)
 	}
 
 	bytes, err := ioutil.ReadAll(file)
