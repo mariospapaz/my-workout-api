@@ -42,5 +42,5 @@ func main() {
 
 	router.GET("/api/workout", GetAllWorkouts)
 	router.GET("/api/workout/:id", GetDayWorkout)
-	router.Run("localhost:25585")
+	router.Run("localhost:80")
 }
