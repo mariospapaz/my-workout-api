@@ -28,7 +28,7 @@ var Plans []Plan
 func ConnectDB() {
 
 	// Must use Mongo 5.0 stable (note: change localhost to 'bibi' when the image is about to upload)
-	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://root:example@172.24.2.2:27017/?maxPoolSize=200&w=majority"))
+	client, err := mongo.NewClient(options.Client().ApplyURI("mongodb://root:example@bibi:27017/"))
 	if err != nil {
 		panic(err)
 	}
