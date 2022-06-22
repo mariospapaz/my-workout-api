@@ -28,7 +28,7 @@ jobs:
       
       - 
         name: Running Script
-        run : chmod +x ./.github/push_images.sh && bash ./.github/push_images.sh
+        run : chmod +x ./.github/release.sh && bash ./.github/release.sh
 
       - 
         name: Bot
