@@ -15,7 +15,7 @@ WORKDIR /.
 COPY --from=builder /build/my-workout .
 COPY ./data.json ./
 
-EXPOSE 80
+EXPOSE 8080
 
 # executable
 ENTRYPOINT [ "./my-workout" ]

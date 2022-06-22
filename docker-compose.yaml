@@ -19,13 +19,9 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
 
     command: --quiet
-
-    ports:
-      - 27017:27017
-
+    
     networks:
-      my-workout-network:
-        ipv4_address: 172.24.2.2
+      - my-workout-network
     healthcheck:
         test: ["CMD", "mongo"]
         interval: 5s
@@ -40,11 +36,10 @@ services:
     restart: on-failure
     
     networks:
-      my-workout-network:
-        ipv4_address: 172.24.2.3
+      - my-workout-network
     depends_on:
       mongo:
         condition: service_healthy
 
     ports:
-      - 80:80
+      - 8080:8080
