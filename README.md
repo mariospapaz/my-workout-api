@@ -1,7 +1,5 @@
-## my-workout :
-
-[![CI](https://github.com/mariospapaz/my-workout/actions/workflows/CI.yml/badge.svg)](https://github.com/mariospapaz/my-workout/actions/workflows/CI.yml)
-[![CD](https://github.com/mariospapaz/my-workout/actions/workflows/CD.yaml/badge.svg)](https://github.com/mariospapaz/my-workout/actions/workflows/CD.yaml)
+## my-workout 
+[![Release](https://github.com/mariospapaz/my-workout/actions/workflows/release.yaml/badge.svg)](https://github.com/mariospapaz/my-workout/actions/workflows/release.yaml)
 
 ## Plan
 
