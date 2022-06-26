@@ -9,7 +9,7 @@
 
 **for servers**
 
-`docker pull mongodb:5.0`
+`docker pull mongodb:5.0` (hostname must be named `bibi`)
 
 `docker pull mariospapaz/api-workout:1.0`
 
