@@ -1,4 +1,4 @@
-## my-workout 
+## my-workout-api
 [![Release](https://github.com/mariospapaz/my-workout/actions/workflows/release.yaml/badge.svg)](https://github.com/mariospapaz/my-workout/actions/workflows/release.yaml)
 
 ## Plan
