@@ -1,5 +1,5 @@
 VERSION=1.0
-NAME="my-workout"
+NAME="api-workout"
 
 echo -e "#####################################\n\n"
 
