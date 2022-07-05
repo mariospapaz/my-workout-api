@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,6 +40,12 @@ func main() {
 	ConnectDB()
 
 	router := gin.Default()
+
+	config := cors.DefaultConfig()
+
+	config.AllowAllOrigins = true // web dev whines about something about cors :/
+
+	router.Use(cors.New(config))
 
 	router.GET("/api/workout", GetAllWorkouts)
 	router.GET("/api/workout/:id", GetDayWorkout)
