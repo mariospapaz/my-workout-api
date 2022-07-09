@@ -9,7 +9,7 @@ https://hub.docker.com/r/mariospapaz/my-workout
 
 **for servers**
 
-`docker pull mongodb:5.0` (hostname must be named `bibi`)
+`docker pull mongodb:5.0` (hostname must be named `bibi`, api will not work without this spec and a mongodb image)
 
 `docker pull mariospapaz/api-workout:1.0`
 
