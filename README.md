@@ -1,5 +1,5 @@
-## my-workout-api
-[![Release](https://github.com/mariospapaz/my-workout/actions/workflows/release.yaml/badge.svg)](https://github.com/mariospapaz/my-workout/actions/workflows/release.yaml)
+# my-workout-api
+https://hub.docker.com/r/mariospapaz/my-workout
 
 ## Plan
 
